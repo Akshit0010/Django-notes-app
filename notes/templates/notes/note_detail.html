@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ note.title }} - Notes App{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12 mb-3">
+        <a href="{% url 'note_list' %}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Back to Notes
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h1 class="card-title note-title display-6 mb-3">{{ note.title }}</h1>
+
+                <div class="note-date mb-4">
+                    <span class="badge bg-primary me-2">
+                        <i class="bi bi-clock"></i> Created: {{ note.created_at|date:"F d, Y H:i" }}
+                    </span>
+                    {% if note.updated_at != note.created_at %}
+                        <span class="badge bg-secondary">
+                            <i class="bi bi-pencil"></i> Last Updated: {{ note.updated_at|date:"F d, Y H:i" }}
+                        </span>
+                    {% endif %}
+                </div>
+
+                <div class="card-text">
+                    <h5 class="text-secondary mb-3">Description:</h5>
+                    <p class="lead" style="white-space: pre-wrap;">{{ note.description }}</p>
+                </div>
+
+                <hr class="my-4">
+
+                <div class="d-flex gap-2">
+                    <a href="{% url 'note_update' note.pk %}" class="btn btn-primary">
+                        <i class="bi bi-pencil"></i> Edit Note
+                    </a>
+                    <a href="{% url 'note_delete' note.pk %}" class="btn btn-danger">
+                        <i class="bi bi-trash"></i> Delete Note
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
