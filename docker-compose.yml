@@ -14,28 +14,21 @@ services:
       - mysql_data:/var/lib/mysql
     ports:
       - "3306:3306"
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
     networks:
       - notes_network
 
   web:
-    build: .
+    image: akshittomar/notes-app:latest
     container_name: notes_django
     restart: unless-stopped
     command: /app/entrypoint.sh
-    volumes:
-      - .:/app
-      - static_volume:/app/staticfiles
-      - media_volume:/app/media
     env_file:
       - .env
+    volumes:
+      - static_volume:/app/staticfiles
+      - media_volume:/app/media
     depends_on:
-      db:
-        condition: service_healthy
+      - db
     networks:
       - notes_network
 
